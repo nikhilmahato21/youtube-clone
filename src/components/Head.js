@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ham from "../images/hamburger.svg";
 import yt from "../images/yt.svg";
 import user from "../images/user.png";
 import search from "../images/search.svg";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
+import { YOUTUBE_SEARCH_API } from "../utils/constant";
 
 const Head = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => getSearchSuggestions(), 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  const getSearchSuggestions = async () => {
+    console.log(searchQuery);
+    const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+    const json = await data.json();
+    // console.log(json[1]);
+  };
+
   const dispatch = useDispatch();
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
@@ -27,6 +45,8 @@ const Head = () => {
           className=" w-1/2 p-3  border border-gray-400 rounded-s-full "
           type="text"
           placeholder="search.."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="border border-gray-400   rounded-e-full text-center bg-gray-100 absolute  top-0 p-2">
           <svg

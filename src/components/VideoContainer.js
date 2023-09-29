@@ -16,11 +16,12 @@ const VideoContainer = () => {
 
     setVideos(json.items);
   };
+
   return (
     <div className="flex flex-wrap p-2  justify-center">
       {videos.map((video) => (
-        <Link to={"/watch?v=" + video.id}>
-          <VideoCard key={video.id} info={video} />
+        <Link key={video.id} to={"/watch?v=" + video.id}>
+          <VideoCard info={video} />
         </Link>
       ))}
     </div>
